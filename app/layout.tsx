@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { MicrophoneContextProvider } from "@/context/MicrophoneContextProvider";
+import { DeepgramContextProvider } from "@/context/DeepgramContextProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,7 +31,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <MicrophoneContextProvider>
+          <DeepgramContextProvider>
+            {children}
+            <Toaster/>
+          </DeepgramContextProvider>
+        </MicrophoneContextProvider>
       </body>
     </html>
   );
