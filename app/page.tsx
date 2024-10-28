@@ -55,7 +55,7 @@ export default function Component() {
       const thisCaption = data.channel.alternatives[0].transcript
 
       if (thisCaption !== "") {
-        setCaption(thisCaption)
+        setCaption( cap => cap ? cap + " " + thisCaption : thisCaption ) 
       }
     }
 
