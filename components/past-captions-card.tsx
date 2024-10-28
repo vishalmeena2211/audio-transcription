@@ -1,5 +1,5 @@
-import { Card, CardContent } from "./ui/card"
-import { ScrollArea } from "./ui/scroll-area"
+import { Card, CardContent } from "@/components/ui/card"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 // Component to display past captions in a card format
 export const PastCaptionsCard = ({ pastCaptions }: { pastCaptions: string[] }) => (

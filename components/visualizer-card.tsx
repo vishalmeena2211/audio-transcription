@@ -1,9 +1,9 @@
 import { MicrophoneState } from "@/lib/types"; // Importing the MicrophoneState type
-import { ConnectionStatus } from "./connection-status"; // Importing the ConnectionStatus component
-import { StatusBadges } from "./status-badges"; // Importing the StatusBadges component
-import { Button } from "./ui/button"; // Importing the Button component
-import { Card, CardContent } from "./ui/card"; // Importing the Card and CardContent components
-import Visualizer from "./visualizer"; // Importing the Visualizer component
+import { ConnectionStatus } from "@/components/connection-status"; // Importing the ConnectionStatus component
+import { StatusBadges } from "@/components/status-badges"; // Importing the StatusBadges component
+import { Button } from "@/components/ui/button"; // Importing the Button component
+import { Card, CardContent } from "@/components/ui/card"; // Importing the Card and CardContent components
+import Visualizer from "@/components/visualizer"; // Importing the Visualizer component
 import { SOCKET_STATES } from "@deepgram/sdk"; // Importing SOCKET_STATES from the deepgram SDK
 
 // Defining the VisualizerCard component

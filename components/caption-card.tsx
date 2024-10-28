@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { Card, CardContent } from "./ui/card";
-import { ScrollArea } from "./ui/scroll-area";
+import { Card, CardContent } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 // Define a functional component named CaptionCard that takes a prop 'caption' which can be a string or undefined
 export const CaptionCard: FC<{ caption: string | undefined }> = ({ caption }) => (

@@ -1,4 +1,4 @@
-import { Badge } from "./ui/badge"; // Importing the Badge component
+import { Badge } from "@/components/ui/badge"; // Importing the Badge component
 import { Mic, Wifi } from "lucide-react"; // Importing icons from lucide-react
 import { SOCKET_STATES } from "@deepgram/sdk"; // Importing SOCKET_STATES from deepgram SDK
 import { MicrophoneState } from "@/lib/types"; // Importing MicrophoneState type

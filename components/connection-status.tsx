@@ -1,5 +1,5 @@
 import { SOCKET_STATES } from "@deepgram/sdk"; // Importing SOCKET_STATES from the Deepgram SDK
-import { Badge } from "./ui/badge"; // Importing the Badge component
+import { Badge } from "@/components/ui/badge"; // Importing the Badge component
 
 // Defining the ConnectionStatus component which takes connectionState as a prop
 export const ConnectionStatus = ({ connectionState }: { connectionState: SOCKET_STATES }) => (
