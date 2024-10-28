@@ -3,8 +3,8 @@ import { ConnectionStatus } from "@/components/connection-status"; // Importing 
 import { StatusBadges } from "@/components/status-badges"; // Importing the StatusBadges component
 import { Button } from "@/components/ui/button"; // Importing the Button component
 import { Card, CardContent } from "@/components/ui/card"; // Importing the Card and CardContent components
-import Visualizer from "@/components/visualizer"; // Importing the Visualizer component
 import { SOCKET_STATES } from "@deepgram/sdk"; // Importing SOCKET_STATES from the deepgram SDK
+import Visualizer from "./visualizer-component";
 
 // Defining the VisualizerCard component
 export const VisualizerCard = ({ microphone, connectionState, microphoneState, handleToggleMicrophone }: { microphone: MediaRecorder | null, connectionState: SOCKET_STATES, microphoneState: MicrophoneState | null, handleToggleMicrophone: () => void }) => (
