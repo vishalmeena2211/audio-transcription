@@ -18,7 +18,7 @@ export const VisualizerCard = ({ microphone, connectionState, microphoneState, h
             <StatusBadges
               microphoneState={microphoneState} connectionState={connectionState} /> {/* StatusBadges component */}
             <Button onClick={handleToggleMicrophone} className="mt-4"> {/* Button to toggle microphone */}
-              {microphoneState === MicrophoneState.Open ? "Stop Microphone" : "Start Microphone"} {/* Button text based on microphone state */}
+              {microphoneState === MicrophoneState.Open ? "Save Transcription" : "Start Transcription"} {/* Button text based on microphone state */}
             </Button>
           </div>
         </div>
