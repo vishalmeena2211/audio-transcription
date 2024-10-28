@@ -6,20 +6,17 @@ import {
   LiveTranscriptionEvent,
   LiveTranscriptionEvents,
   useDeepgram,
-} from "../context/DeepgramContextProvider"
+} from "../context/deepgram-context-provider"
 import {
-  MicrophoneEvents,
-  MicrophoneState,
   useMicrophone,
-} from "../context/MicrophoneContextProvider"
-import Visualizer from "@/components/Visualizer"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Mic, Wifi } from "lucide-react"
-import Footer from "@/components/footer"
-import Header from "@/components/header"
-import { ScrollArea } from "@/components/ui/scroll-area"
+} from "../context/microphone-context-provider"
+import { Footer } from "@/components/footer"
+import { Header } from "@/components/header"
+import { VisualizerCard } from "@/components/visualizer-card"
+import { CaptionCard } from "@/components/caption-card"
+import { PastCaptionsCard } from "@/components/past-captions-card"
+import { MicrophoneEvents, MicrophoneState } from "@/lib/types"
+
 
 export default function Component() {
   const [caption, setCaption] = useState<string | undefined>(undefined)
@@ -55,7 +52,6 @@ export default function Component() {
     }
 
     const onTranscript = (data: LiveTranscriptionEvent) => {
-      // const { is_final: isFinal, speech_final: speechFinal } = data
       const thisCaption = data.channel.alternatives[0].transcript
 
       if (thisCaption !== "") {
@@ -109,72 +105,17 @@ export default function Component() {
     <div className="flex flex-col bg-gray-900 text-white">
       <Header />
       <main className="flex-grow flex flex-col items-center justify-center p-4 relative">
-        <Card className="w-full max-w-4xl bg-gray-900 shadow-xl">
-          <CardContent className="p-6">
-            <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden flex justify-center items-center">
-              {microphone && <Visualizer microphone={microphone} />}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <Badge variant="secondary" className="text-lg px-3 py-1 animate-pulse">
-                    {connectionState === SOCKET_STATES.open ? "Connected" : "Disconnected"}
-                  </Badge>
-                  <div className="flex justify-center space-x-4">
-                    <Badge variant={microphoneState === MicrophoneState.Open ? "default" : "secondary"} className="text-sm">
-                      <Mic className="w-4 h-4 mr-2" />
-                      Microphone
-                    </Badge>
-                    <Badge variant={connectionState === SOCKET_STATES.open ? "default" : "secondary"} className="text-sm">
-                      <Wifi className="w-4 h-4 mr-2" />
-                      Deepgram
-                    </Badge>
-                  </div>
-                  <Button onClick={handleToggleMicrophone} className="mt-4">
-                    {microphoneState === MicrophoneState.Open ? "Stop Microphone" : "Start Microphone"}
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <VisualizerCard
+          microphone={microphone}
+          connectionState={connectionState}
+          microphoneState={microphoneState}
+          handleToggleMicrophone={handleToggleMicrophone}
+        />
         <div className="mt-8 w-full max-w-4xl">
-          <Card className="bg-gray-800 shadow-xl">
-            <CardContent className="p-6">
-              {caption && (
-                <ScrollArea className="max-h-52">
-                  <p className="text-xl md:text-2xl text-center font-medium break-words animate-fade-in text-white">
-                    {caption}
-                  </p>
-                </ScrollArea>
-              )}
-              {!caption && (
-                <p className="text-xl md:text-2xl text-center font-medium text-gray-400 animate-pulse">
-                  Waiting for speech...
-                </p>
-              )}
-            </CardContent>
-          </Card>
+          <CaptionCard caption={caption} />
         </div>
         <div className="mt-8 w-full max-w-4xl">
-          <Card className="bg-gray-800 shadow-xl">
-            <CardContent className="p-6">
-              <h2 className="text-2xl md:text-3xl text-center font-semibold text-white mb-4">Past Captions</h2>
-              <ScrollArea className="max-h-52 mt-4">
-                {pastCaptions.length > 0 ? (
-                  pastCaptions.map((pastCaption, index) => (
-                    <div key={index} className="mb-2 p-2 bg-gray-700 rounded-lg">
-                      <p className="text-lg md:text-xl text-center font-medium break-words text-white">
-                        {index + 1}. {pastCaption}
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-lg md:text-xl text-center font-medium text-gray-400">
-                    No past captions available.
-                  </p>
-                )}
-              </ScrollArea>
-            </CardContent>
-          </Card>
+          <PastCaptionsCard pastCaptions={pastCaptions} />
         </div>
       </main>
       <Footer />

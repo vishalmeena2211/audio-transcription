@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react"
 import { Card } from "@/components/ui/card"
 
+// Function to interpolate between two colors
 const interpolateColor = (
     startColor: number[],
     endColor: number[],
@@ -15,27 +16,29 @@ const interpolateColor = (
     return result
 }
 
-export default function Visualizer({ microphone }: { microphone: MediaRecorder }) {
-    const canvasRef = useRef<HTMLCanvasElement>(null)
-    const audioContext = new (window.AudioContext)()
-    const analyser = audioContext.createAnalyser()
-    const dataArray = new Uint8Array(analyser.frequencyBinCount)
+export default function Visualizer({ microphone }: { microphone: MediaRecorder | null }) {
+    const canvasRef = useRef<HTMLCanvasElement>(null) // Reference to the canvas element
+    const audioContext = new (window.AudioContext)() // Create a new AudioContext
+    const analyser = audioContext.createAnalyser() // Create an AnalyserNode
+    const dataArray = new Uint8Array(analyser.frequencyBinCount) // Array to hold frequency data
 
     useEffect(() => {
-        const source = audioContext.createMediaStreamSource(microphone.stream)
-        source.connect(analyser)
+        if (microphone) {
+            const source = audioContext.createMediaStreamSource(microphone.stream) // Create a MediaStreamAudioSourceNode from the microphone stream
+            source.connect(analyser) // Connect the source to the analyser
 
-        draw()
+            draw() // Start the drawing loop
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [microphone])
 
     const draw = (): void => {
         const canvas = canvasRef.current
 
         if (!canvas) return
 
-        canvas.width = canvas.offsetWidth
-        canvas.height = canvas.offsetHeight
+        canvas.width = canvas.offsetWidth // Set canvas width
+        canvas.height = canvas.offsetHeight // Set canvas height
 
         const context = canvas.getContext("2d")
         const width = canvas.width
@@ -44,13 +47,13 @@ export default function Visualizer({ microphone }: { microphone: MediaRecorder }
         const centerY = height / 2
         const radius = Math.min(width, height) / 2 - 10
 
-        requestAnimationFrame(draw)
+        requestAnimationFrame(draw) // Request the next animation frame
 
-        analyser.getByteFrequencyData(dataArray)
+        analyser.getByteFrequencyData(dataArray) // Get frequency data from the analyser
 
         if (!context) return
 
-        context.clearRect(0, 0, width, height)
+        context.clearRect(0, 0, width, height) // Clear the canvas
 
         const barCount = 180
         const barWidth = (2 * Math.PI) / barCount
@@ -85,6 +88,10 @@ export default function Visualizer({ microphone }: { microphone: MediaRecorder }
         context.strokeStyle = "rgba(0, 100, 0, 0.5)"
         context.lineWidth = 2
         context.stroke()
+    }
+
+    if (!microphone) {
+        return null
     }
 
     return (
