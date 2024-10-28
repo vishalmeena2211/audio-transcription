@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import {
-  LiveConnectionState,
+  SOCKET_STATES,
   LiveTranscriptionEvent,
   LiveTranscriptionEvents,
   useDeepgram,
@@ -55,23 +55,15 @@ export default function Component() {
     }
 
     const onTranscript = (data: LiveTranscriptionEvent) => {
-      const { is_final: isFinal, speech_final: speechFinal } = data
+      // const { is_final: isFinal, speech_final: speechFinal } = data
       const thisCaption = data.channel.alternatives[0].transcript
 
       if (thisCaption !== "") {
-        setCaption(cap => cap ? `${cap} ${thisCaption}` : thisCaption)
+        setCaption(thisCaption)
       }
-
-      // if (isFinal && speechFinal) {
-      //   clearTimeout(captionTimeout.current)
-      //   captionTimeout.current = setTimeout(() => {
-      //     setCaption(undefined)
-      //     clearTimeout(captionTimeout.current)
-      //   }, 3000)
-      // }
     }
 
-    if (connectionState === LiveConnectionState.OPEN) {
+    if (connectionState === SOCKET_STATES.open) {
       connection.addListener(LiveTranscriptionEvents.Transcript, onTranscript)
       microphone.addEventListener(MicrophoneEvents.DataAvailable, onData)
       startMicrophone()
@@ -87,7 +79,7 @@ export default function Component() {
   useEffect(() => {
     if (!connection) return
 
-    if (microphoneState !== MicrophoneState.Open && connectionState === LiveConnectionState.OPEN) {
+    if (microphoneState !== MicrophoneState.Open && connectionState === SOCKET_STATES.open) {
       connection.keepAlive()
       keepAliveInterval.current = setInterval(() => {
         connection.keepAlive()
@@ -124,14 +116,14 @@ export default function Component() {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center space-y-4">
                   <Badge variant="secondary" className="text-lg px-3 py-1 animate-pulse">
-                    {connectionState === LiveConnectionState.OPEN ? "Connected" : "Disconnected"}
+                    {connectionState === SOCKET_STATES.open ? "Connected" : "Disconnected"}
                   </Badge>
                   <div className="flex justify-center space-x-4">
                     <Badge variant={microphoneState === MicrophoneState.Open ? "default" : "secondary"} className="text-sm">
                       <Mic className="w-4 h-4 mr-2" />
                       Microphone
                     </Badge>
-                    <Badge variant={connectionState === LiveConnectionState.OPEN ? "default" : "secondary"} className="text-sm">
+                    <Badge variant={connectionState === SOCKET_STATES.open ? "default" : "secondary"} className="text-sm">
                       <Wifi className="w-4 h-4 mr-2" />
                       Deepgram
                     </Badge>
